@@ -8,13 +8,19 @@ namespace SchoolSystem.Services
     {
         private IStudentRepository studentRepo;
         private ISubjectRepository subjectRepo;
+        private IJwtTokenService _jwtTokenService;
         private Validation validation = new Validation();
 
 
-        public StudentService(IStudentRepository _studentRepo, ISubjectRepository _subjectRepo)
+        public StudentService(
+            IStudentRepository _studentRepo,
+            ISubjectRepository _subjectRepo,
+            IJwtTokenService jwtTokenService
+            )
         {
             studentRepo = _studentRepo;
             subjectRepo = _subjectRepo;
+            _jwtTokenService = jwtTokenService;
         }
 
         public object GetAllStudentsAndSubjects()
@@ -45,12 +51,16 @@ namespace SchoolSystem.Services
             return "Not Found!";
         }
 
-        public Student StudentLogin(string userName, string password)
+        public object StudentLogin(string userName, string password)
         {
             var result = studentRepo.ValidateUserNamePassword(userName, password);
             if (result == null)
                 throw new InvalidOperationException($"No Student found with User Name: {userName} and Password: {password}");
-            return result;
+            else
+            {
+                var token = _jwtTokenService.GenerateToken(userName, result.StudentEmail);
+                return new { result, token};
+            }
         }
 
         public string StudentRegestration(StudentDTO dto)
@@ -63,6 +73,7 @@ namespace SchoolSystem.Services
                     StudentFullName = dto.StudentFullName,
                     StudentEmail = dto.StudentEmail,
                     Password = dto.Password,
+                    InstractorId = dto.InstractorId,
                 };
 
                 var problems = validation.GetValidationResult(stud);

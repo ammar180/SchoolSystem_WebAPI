@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolSystem.Models;
 
@@ -11,9 +12,11 @@ using SchoolSystem.Models;
 namespace SchoolSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241024083009_AddInstractor")]
+    partial class AddInstractor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace SchoolSystem.Migrations
                     b.HasIndex("SubjectId")
                         .IsUnique();
 
-                    b.ToTable("Instractors");
+                    b.ToTable("Instractor");
                 });
 
             modelBuilder.Entity("SchoolSystem.Models.Entities.Student", b =>
@@ -165,7 +168,8 @@ namespace SchoolSystem.Migrations
 
             modelBuilder.Entity("SchoolSystem.Models.Entities.Subject", b =>
                 {
-                    b.Navigation("Instractor");
+                    b.Navigation("Instractor")
+                        .IsRequired();
 
                     b.Navigation("Students");
                 });

@@ -3,12 +3,12 @@ using SchoolSystem.Models.Entities;
 using SchoolSystem.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SchoolSystem.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -59,7 +59,7 @@ namespace SchoolSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("GetAllStudents")]
+        [HttpGet("GetAllStudents"), AllowAnonymous]
         public IActionResult GetAllStudents()
         {
             try
@@ -82,7 +82,7 @@ namespace SchoolSystem.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return Unauthorized(ex.Message);
             }
         }
     }

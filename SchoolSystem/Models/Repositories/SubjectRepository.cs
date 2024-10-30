@@ -27,6 +27,11 @@ namespace SchoolSystem.Models.Repositories
             return context.Subjects.FirstOrDefault(i => i.SubjectId == Id);
         }
 
+        public int GetIdByName(string subjectName)
+        {
+            return context.Subjects.FirstOrDefault(s => s.Name == subjectName)?.SubjectId??0;
+        }
+
         public List<Subject>? GetSubjectsStudents()
         {
             return context.Subjects

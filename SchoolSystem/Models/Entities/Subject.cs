@@ -9,5 +9,6 @@ namespace SchoolSystem.Models.Entities
         [DisplayName("Subject Name")]
         public string Name { get; set; }
         public List<Student>? Students { get; set; }
+        public Instractor? Instractor { get; set; }
     }
 }
