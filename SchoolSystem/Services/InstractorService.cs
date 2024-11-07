@@ -6,15 +6,20 @@ namespace SchoolSystem.Services
 {
     public class InstractorService : IInstractorService
     {
-        private IInstractorRepository InstractorRepo;
-        private ISubjectRepository subjectRepo;
-        private Validation validation = new Validation();
+        private readonly IInstractorRepository InstractorRepo;
+        private readonly ISubjectRepository subjectRepo;
+        private readonly IStudentRepository studentRepo;
+        private readonly Validation validation = new Validation();
 
 
-        public InstractorService(IInstractorRepository _InstractorRepo, ISubjectRepository _subjectRepo)
+        public InstractorService(
+            IInstractorRepository _InstractorRepo,
+            ISubjectRepository _subjectRepo,
+            IStudentRepository _studentRepo)
         {
             InstractorRepo = _InstractorRepo;
             subjectRepo = _subjectRepo;
+            studentRepo = _studentRepo;
         }
 
         public string RemoveInstractor(int id)
@@ -75,6 +80,20 @@ namespace SchoolSystem.Services
         public List<Instractor> GetAllInstractorsAndSubjects()
         {
             return InstractorRepo.GetAll();
+        }
+
+        public void AddStudentInstractor(int studentId, int instractorId)
+        {
+            var student = studentRepo.GetById(studentId);
+            var instractor = InstractorRepo.GetById(instractorId);
+            if (student != null && instractor != null)
+            {
+                //instractor.Students.Add(student);
+                instractor.Students.Add(new InstractorStudent { InstractorId = instractorId, StudentId = studentId});
+                InstractorRepo.Update(instractor);
+            }
+            else
+                throw new InvalidDataException($"Instractor Id {instractorId} or StudentId {studentId}, NOT found");
         }
     }
 }

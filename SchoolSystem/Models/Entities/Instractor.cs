@@ -7,7 +7,7 @@ namespace SchoolSystem.Models.Entities
         public int InstractorId { get; set; }
         public string Name { get; set; }
         public int Salary { get; set; }
-        public List<Student>? Students { get; set; }
+        public List<InstractorStudent> Students { get; set; }
         [ForeignKey("SubjectId")]
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }

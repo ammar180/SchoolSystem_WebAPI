@@ -69,5 +69,18 @@ namespace SchoolSystem.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("AddInstractorStudent")]
+        public IActionResult AddInstractorStudent([FromQuery] int instractorId, [FromQuery] int studentId)
+        {
+            try
+            {
+                _instractorService.AddStudentInstractor(studentId,instractorId);
+                return Ok("Sutdent Set Successfully, try getAll to check!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolSystem.Models;
 
@@ -11,9 +12,11 @@ using SchoolSystem.Models;
 namespace SchoolSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107104318_InstractorStudents")]
+    partial class InstractorStudents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace SchoolSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("InstractorStudent", b =>
+                {
+                    b.Property<int>("InstractorsInstractorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsStudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InstractorsInstractorId", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("InstractorStudent");
+                });
 
             modelBuilder.Entity("SchoolSystem.Models.Entities.Instractor", b =>
                 {
@@ -46,21 +64,6 @@ namespace SchoolSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Instractors");
-                });
-
-            modelBuilder.Entity("SchoolSystem.Models.Entities.InstractorStudent", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstractorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "InstractorId");
-
-                    b.HasIndex("InstractorId");
-
-                    b.ToTable("InstractorStudents");
                 });
 
             modelBuilder.Entity("SchoolSystem.Models.Entities.Student", b =>
@@ -142,6 +145,21 @@ namespace SchoolSystem.Migrations
                         });
                 });
 
+            modelBuilder.Entity("InstractorStudent", b =>
+                {
+                    b.HasOne("SchoolSystem.Models.Entities.Instractor", null)
+                        .WithMany()
+                        .HasForeignKey("InstractorsInstractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystem.Models.Entities.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SchoolSystem.Models.Entities.Instractor", b =>
                 {
                     b.HasOne("SchoolSystem.Models.Entities.Subject", "Subject")
@@ -153,25 +171,6 @@ namespace SchoolSystem.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SchoolSystem.Models.Entities.InstractorStudent", b =>
-                {
-                    b.HasOne("SchoolSystem.Models.Entities.Instractor", "Instractor")
-                        .WithMany("Students")
-                        .HasForeignKey("InstractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SchoolSystem.Models.Entities.Student", "Student")
-                        .WithMany("Instractors")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Instractor");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("SchoolSystem.Models.Entities.Student", b =>
                 {
                     b.HasOne("SchoolSystem.Models.Entities.Subject", "Subject")
@@ -179,16 +178,6 @@ namespace SchoolSystem.Migrations
                         .HasForeignKey("SubjectId");
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("SchoolSystem.Models.Entities.Instractor", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("SchoolSystem.Models.Entities.Student", b =>
-                {
-                    b.Navigation("Instractors");
                 });
 
             modelBuilder.Entity("SchoolSystem.Models.Entities.Subject", b =>

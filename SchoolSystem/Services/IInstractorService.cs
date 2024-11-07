@@ -10,5 +10,6 @@ namespace SchoolSystem.Services
         string RemoveInstractor(int id);
         public string InstractorRegestration(InstractorDto dto);
         string UpdateInstractorData(int id, InstractorDto dto);
+        void AddStudentInstractor(int  studentId, int instractorId);
     }
 }

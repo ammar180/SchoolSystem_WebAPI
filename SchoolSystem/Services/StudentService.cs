@@ -73,7 +73,6 @@ namespace SchoolSystem.Services
                     StudentFullName = dto.StudentFullName,
                     StudentEmail = dto.StudentEmail,
                     Password = dto.Password,
-                    InstractorId = dto.InstractorId,
                 };
 
                 var problems = validation.GetValidationResult(stud);
