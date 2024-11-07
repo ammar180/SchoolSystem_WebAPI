@@ -88,8 +88,7 @@ namespace SchoolSystem.Services
             var instractor = InstractorRepo.GetById(instractorId);
             if (student != null && instractor != null)
             {
-                //instractor.Students.Add(student);
-                instractor.Students.Add(new InstractorStudent { InstractorId = instractorId, StudentId = studentId});
+                instractor.Students.Add(student);
                 InstractorRepo.Update(instractor);
             }
             else

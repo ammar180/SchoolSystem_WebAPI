@@ -15,6 +15,6 @@ namespace SchoolSystem.Models.Entities
         [ForeignKey("SubjectId")]
         public int? SubjectId { get; set; }
         public Subject? Subject { get; set; }
-        public List<InstractorStudent> Instractors { get; set; }
+        public List<Instractor> Instractors { get; set; }
     }
 }

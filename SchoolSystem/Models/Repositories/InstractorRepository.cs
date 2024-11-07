@@ -27,14 +27,19 @@ namespace SchoolSystem.Models.Repositories
             return context.Instractors
                 .Include(i => i.Subject)
                 .Include(i => i.Students)
-                .ThenInclude(i => i.Student)
                 .Select(i => new Instractor()
                 {
                     InstractorId = i.InstractorId,
                     Name = i.Name,
                     Salary  = i.Salary,
                     Subject = i.Subject,
-                    Students = i.Students.Select(s => new InstractorStudent { Student = new Student { StudentFullName = s.Student.StudentFullName} }).ToList(),
+                    Students = i.Students
+                    .Select(s => new Student
+                    {
+                        StudentFullName = s.StudentFullName,
+                        StudentEmail = s.StudentEmail,
+                        StudentId = s.StudentId,
+                    }).ToList()
                 })
                 .ToList();
         }
